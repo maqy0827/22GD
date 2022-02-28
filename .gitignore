@@ -1,0 +1,14 @@
+#忽略PCB部分
+/PCB/__Previews/*
+/PCB/History/*
+
+#忽略MDK编译文件
+/project/MDK/DebugConfig/*
+/project/MDK/Listings/*
+/project/MDK/Objects/*
+/project/MDK/22GD.uvguix.maqy0
+
+#忽略VScode部分
+/project/MDK/.vscode/keil-assistant.log
+/project/MDK/.vscode/uv4.log
+/project/MDK/.vscode/uv4.log.lock
