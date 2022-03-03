@@ -12,14 +12,47 @@ oled_init()函数中的初始化引脚即可
 
 #define OLED_SDA_H GPIO_SetBits(GPIOB,GPIO_Pin_10)		//SDA引脚输出高电平
 #define OLED_SDA_L GPIO_ResetBits(GPIOB,GPIO_Pin_10)	//SDA引脚输出低电平
-
+/*
+说明：初始化oled模块
+*/
 extern void OLED_init(void);
+
+/*
+说明：清除oled显示
+*/
 extern void OLED_clear(void);
-extern void OLED_setpos(uint8_t x,uint8_t y);
-extern void IIC_writedata(uint8_t data,char identifying);
-extern void IIC_sendbyte(char Byte);
-extern void IIC_waitack(void);
+
+/*
+说明：以6*8(8*16)的大小在oled上显示一个字符
+参数：x 取值范围0~127
+			y 取值范围0~7(8*16时范围为0-6)，与x一起决定显示位置
+			character 你要显示的字符
+*/
 extern void OLED_show6x8char(uint8_t x,uint8_t y,char character);
+extern void OLED_show8x16char(uint8_t x,uint8_t y,char character);
+/*
+说明：以6*8(8*16)的大小在oled上显示一个以'\0'字符结尾的字符串
+参数：x 取值范围0~127
+			y 取值范围0~7(8*16时范围为0-6)，与x一起决定显示位置
+			string 你要显示的字符串
+			
+			该函数遇到'\0'字符才会结束。
+*/
+extern void OLED_show6x8string(uint8_t x,uint8_t y,char* string);
+extern void OLED_show8x16string(uint8_t x,uint8_t y,char* string);
+/*
+说明：以6*8(8*16)的大小在oled上显示一个数字
+参数：x 取值范围0~127
+			y 取值范围0~7(8*16时为0-6)，与x一起决定显示位置
+			number 用户要显示的数字，正负均可
+*/
+extern void OLED_show6x8number(uint8_t x,uint8_t y,int number);
+extern void OLED_show8x16number(uint8_t x,uint8_t y,int number);
+
+
+//以下部分用户无需关心
+extern void IIC_writedata(uint8_t data,char identifying);
+extern void OLED_setpos(uint8_t x,uint8_t y);
 
 #define OLED_COMMAND 	0
 #define OLED_DATA 		1

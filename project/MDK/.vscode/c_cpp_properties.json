@@ -3,17 +3,17 @@
         {
             "name": "project",
             "includePath": [
-                "e:\\Project\\22GDproject\\project\\App\\inc",
-                "e:\\Project\\22GDproject\\project\\Board\\inc",
-                "e:\\Project\\22GDproject\\project\\Chip",
-                "e:\\Project\\22GDproject\\project\\Lib\\inc",
+                "e:\\Project\\22GDproject\\Project\\App\\inc",
+                "e:\\Project\\22GDproject\\Project\\Board\\inc",
+                "e:\\Project\\22GDproject\\Project\\Chip",
+                "e:\\Project\\22GDproject\\Project\\Lib\\inc",
                 "D:\\Keil_v5\\ARM\\ARMCLANG\\include",
                 "D:\\Keil_v5\\ARM\\ARMCLANG\\include\\arm_linux",
                 "D:\\Keil_v5\\ARM\\ARMCLANG\\include\\arm_linux_compat",
                 "D:\\Keil_v5\\ARM\\ARMCLANG\\include\\libcxx",
-                "e:\\Project\\22GDproject\\project\\App\\src",
-                "e:\\Project\\22GDproject\\project\\Board\\src",
-                "e:\\Project\\22GDproject\\project\\Lib\\src"
+                "e:\\Project\\22GDproject\\Project\\App\\src",
+                "e:\\Project\\22GDproject\\Project\\Board\\src",
+                "e:\\Project\\22GDproject\\Project\\Lib\\src"
             ],
             "defines": [
                 "STM32F10X_LD",

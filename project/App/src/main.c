@@ -1,8 +1,6 @@
 /*
  * @Author: 诗云
  * @Date: 2022-02-28 10:22:38
- * @LastEditors: 诗云
- * @LastEditTime: 2022-02-28 14:49:42
  * @FilePath: \22GDproject\project\App\src\main.c
  * @Description: 主函数
  * 
@@ -18,6 +16,7 @@ int main(void)
 	//初始化OLED
 	OLED_init();
 	
+
 	
 	return 0;
 }
