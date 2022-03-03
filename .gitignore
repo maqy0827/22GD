@@ -1,7 +1,6 @@
 #忽略PCB部分
 /PCB/22GD/__Previews/*
 /PCB/22GD/History/*
-/PCB/Test1/__Previews/*
 /PCB/Test1/History/*
 /PCB/Test1/Project Logs for Test1/*
 /PCB/Test1/Project Outputs for Test1/*
