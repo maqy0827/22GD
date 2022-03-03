@@ -16,8 +16,11 @@
 /project/MDK/.vscode/uv4.log
 /project/MDK/.vscode/uv4.log.lock
 
-#忽略Proteus仿真部分文件
-/Proteus/*.maqy0.workspace
+#忽略Proteus仿真文件
+/Proteus/*
 
 #忽略Repo元件库文件
 /Repo/*
+
+#忽略CubeMX引脚分配用文件
+/Project/Pin/*
