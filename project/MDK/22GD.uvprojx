@@ -403,6 +403,11 @@
               <FileType>1</FileType>
               <FilePath>..\Board\src\oled.c</FilePath>
             </File>
+            <File>
+              <FileName>measure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Board\src\measure.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
