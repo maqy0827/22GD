@@ -24,6 +24,8 @@ int main(void)
 	{
 		OLED_show8x16number(0,0,TIM_GetCounter(TIM2));
 		OLED_show8x16number(0,2,TIM_GetCounter(TIM3));
+		OLED_show8x16number(0,4,GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7));
+		OLED_show8x16number(0,6,GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6));
 	}
 	/* Test End */
 
