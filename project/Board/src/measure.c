@@ -31,6 +31,32 @@ void measure_init(void)
 	TIM_SetCounter(TIM2,0);
 	TIM_Cmd(TIM2, ENABLE);
 
+	
+	//初始化 ADC1 IN2345 用于提高测量精度
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
+
+	GPIO_InitStructure.GPIO_Pin = 0x001E;					//PA2 - PA5
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;			//模拟输入
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+
+	ADC_InitTypeDef ADC_InitStructure;
+	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+	ADC_InitStructure.ADC_NbrOfChannel = 1;
+	ADC_Init(ADC1,&ADC_InitStructure);
+
+	RCC_ADCCLKConfig(RCC_PCLK2_Div8);
+	ADC_Cmd(ADC1,ENABLE);
+	ADC_ResetCalibration(ADC1);
+	while(ADC_GetResetCalibrationStatus(ADC1));
+	ADC_StartCalibration(ADC1); //校准
+	while(ADC_GetCalibrationStatus(ADC1));
+	
 	return;
 }
 
