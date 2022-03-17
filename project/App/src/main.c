@@ -22,10 +22,10 @@ int main(void)
 	testPWM_init(999);
 	while(1)
 	{
-		OLED_show8x16number(0,0,TIM_GetCounter(TIM2));
-		OLED_show8x16number(0,2,TIM_GetCounter(TIM3));
-		OLED_show8x16number(0,4,GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7));
-		OLED_show8x16number(0,6,GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6));
+		ADC_RegularChannelConfig(ADC1,2,1,ADC_SampleTime_7Cycles5);
+		ADC_SoftwareStartConvCmd(ADC1,ENABLE);
+		while(!ADC_GetFlagStatus(ADC1,ADC_FLAG_EOC));
+		OLED_show8x16number(0,0,ADC_GetConversionValue(ADC1));
 	}
 	/* Test End */
 

@@ -3,13 +3,28 @@
 //测量初始化
 void measure_init(void)
 {
-	//使用 TIM3 输出 PWM 测试 TIM2 的计数功能
+	//初始化 PB3 - PB9 按键输入引脚，PC13 LED 引脚
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);
 
-	//TIM2 设定 输入捕获计数，输入端口 PA0
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Pin = 0x01FC;					//PB3 - PB9
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;	//浮空输入，外部下拉
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;				//PA15
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;		//开漏输出
+	GPIO_Init(GPIOC,&GPIO_InitStructure);
+
+
+	//TIM2 设定 输入捕获计数，输入端口 PA0 ，正交解码计数时输入 PA0 PA1
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);	//使能 GPIOA 时钟
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);		//使能TIM2时钟
 	
-	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	//PA0
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;			//下拉输入
@@ -31,6 +46,32 @@ void measure_init(void)
 	TIM_SetCounter(TIM2,0);
 	TIM_Cmd(TIM2, ENABLE);
 
+	
+	//初始化 ADC1 IN2345 用于提高测量精度
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
+
+	GPIO_InitStructure.GPIO_Pin = 0x001E;					//PA2 - PA5
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;			//模拟输入
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+
+	ADC_InitTypeDef ADC_InitStructure;
+	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;		//两 ADC 互相独立
+	ADC_InitStructure.ADC_ScanConvMode = DISABLE;			//扫描转换模式不开
+	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;		//连续转换模式不开
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;//不适用外部触发
+	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;	//数据对齐方式右对齐
+	ADC_InitStructure.ADC_NbrOfChannel = 1;					//转换通道数量1
+	ADC_Init(ADC1,&ADC_InitStructure);
+
+	RCC_ADCCLKConfig(RCC_PCLK2_Div8);						//时钟分频 8(9 MHz)
+	ADC_Cmd(ADC1,ENABLE);
+	ADC_ResetCalibration(ADC1);
+	while(ADC_GetResetCalibrationStatus(ADC1));
+	ADC_StartCalibration(ADC1);				//校准
+	while(ADC_GetCalibrationStatus(ADC1));	//等待校准完成
+	
 	return;
 }
 

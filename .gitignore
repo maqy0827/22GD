@@ -2,6 +2,8 @@
 /PCB/22GD/src/__Previews/*
 /PCB/22GD/__Previews/*
 /PCB/22GD/History/*
+/PCB/22GD/Project Logs for 22GD/*
+/PCB/22GD/Project Outputs for 22GD/*
 /PCB/Test1/src/__Previews/*
 /PCB/Test1/__Previews/*
 /PCB/Test1/History/*
@@ -27,3 +29,4 @@
 
 #忽略CubeMX引脚分配用文件
 /Project/Pin/*
+
