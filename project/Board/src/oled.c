@@ -66,26 +66,26 @@ void IIC_writedata(uint8_t data,char identifying)
 void OLED_init(void)
 {
  	GPIO_InitTypeDef GPIO_InitStructure;
- 	
+
  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);//打开GPIOB的时钟
-	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_11;
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_13;
  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;//复用推挽输出
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOB,&GPIO_InitStructure);
-	
+
  	GPIO_SetBits(GPIOB,GPIO_Pin_10|GPIO_Pin_11);//使GPIOB10 11输出高电平
-	
-	
+
+
 	//以下代码与oled通讯= =初始化它
 	IIC_writedata(0xAE,OLED_COMMAND);//--display off
 	IIC_writedata(0x00,OLED_COMMAND);//---set low column address
 	IIC_writedata(0x10,OLED_COMMAND);//---set high column address
-	IIC_writedata(0x40,OLED_COMMAND);//--set start line address  
+	IIC_writedata(0x40,OLED_COMMAND);//--set start line address
 	IIC_writedata(0xB0,OLED_COMMAND);//--set page address
 	IIC_writedata(0x81,OLED_COMMAND); // contract control
-	IIC_writedata(0xFF,OLED_COMMAND);//--128   
-	IIC_writedata(0xA1,OLED_COMMAND);//set segment remap 
+	IIC_writedata(0xFF,OLED_COMMAND);//--128
+	IIC_writedata(0xA1,OLED_COMMAND);//set segment remap
 	IIC_writedata(0xA6,OLED_COMMAND);//--normal / reverse
 	IIC_writedata(0xA8,OLED_COMMAND);//--set multiplex ratio(1 to 64)
 	IIC_writedata(0x3F,OLED_COMMAND);//--1/32 duty
@@ -111,9 +111,9 @@ void OLED_init(void)
 }
 
 void OLED_clear(void)
-{ 
-	for(int i=0;i<8;i++)  
-	{  
+{
+	for(int i=0;i<8;i++)
+	{
 		IIC_writedata(0xb0+i,OLED_COMMAND);
 		IIC_writedata(0x00,OLED_COMMAND);
 		IIC_writedata(0x10,OLED_COMMAND);
@@ -127,7 +127,7 @@ void OLED_clear(void)
 void OLED_setpos(uint8_t x,uint8_t y){
 	IIC_writedata(0xb0+y,OLED_COMMAND);
 	IIC_writedata(((x&0xf0)>>4)|0x10,OLED_COMMAND);
-	IIC_writedata((x&0x0f),OLED_COMMAND); 
+	IIC_writedata((x&0x0f),OLED_COMMAND);
 }
 
 void OLED_show6x8char(uint8_t x,uint8_t y,char character)

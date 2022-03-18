@@ -16,6 +16,7 @@ void measure_init(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;				//PA15
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
 
+	//核心板 LED引脚初始化
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;		//开漏输出
 	GPIO_Init(GPIOC,&GPIO_InitStructure);
@@ -24,7 +25,7 @@ void measure_init(void)
 	//TIM2 设定 输入捕获计数，输入端口 PA0 ，正交解码计数时输入 PA0 PA1
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);	//使能 GPIOA 时钟
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);		//使能TIM2时钟
-	
+
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	//PA0
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;			//下拉输入
@@ -38,15 +39,15 @@ void measure_init(void)
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//向上计数
 	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;		//重复计数次数
 	TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);
-	
+
 	//选择正交解码/直接计数
 	TIM_EncoderInterfaceConfig(TIM2,TIM_EncoderMode_TI12,TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
 	//TIM_ETRClockMode2Config(TIM2,TIM_ExtTRGPSC_OFF,TIM_ExtTRGPolarity_NonInverted,0);
-	
+
 	TIM_SetCounter(TIM2,0);
 	TIM_Cmd(TIM2, ENABLE);
 
-	
+
 	//初始化 ADC1 IN2345 用于提高测量精度
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
@@ -71,7 +72,7 @@ void measure_init(void)
 	while(ADC_GetResetCalibrationStatus(ADC1));
 	ADC_StartCalibration(ADC1);				//校准
 	while(ADC_GetCalibrationStatus(ADC1));	//等待校准完成
-	
+
 	return;
 }
 
@@ -88,7 +89,7 @@ void testPWM_init(int period)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;			//服用推挽输出
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
-	
+
 	TIM_DeInit(TIM3);
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_TimeBaseStructure.TIM_Period = period;				//重装载寄存器
@@ -97,7 +98,7 @@ void testPWM_init(int period)
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//向上计数
 	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;		//重复计数次数
 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);
-	
+
 	TIM_OCInitTypeDef TIM_OCInitStrue;
 	TIM_OCInitStrue.TIM_OCMode = TIM_OCMode_Toggle;			//CNT = CCR 时反转电平
 	TIM_OCInitStrue.TIM_Pulse = 0;
@@ -105,13 +106,25 @@ void testPWM_init(int period)
 	TIM_OCInitStrue.TIM_OutputState = TIM_OutputState_Enable;//输出使能
 	TIM_OC1Init(TIM3,&TIM_OCInitStrue);
 	TIM_OC2Init(TIM3,&TIM_OCInitStrue);
-	
+
 	TIM_OC1PreloadConfig(TIM3,TIM_OCPreload_Enable);		//使能预装载寄存器
 	TIM_OC2PreloadConfig(TIM3,TIM_OCPreload_Enable);
-	
+
 	//产生两路相位差 90 度的信号
 	TIM_SetCompare1(TIM3,period/4);
 	TIM_SetCompare2(TIM3,period/4*3);
 
 	TIM_Cmd(TIM3,ENABLE);
+}
+
+uint16_t adc_get(uint8_t channel)
+{
+	if(channel - 2 > 3)
+	{
+		return 0;
+	}
+	ADC_RegularChannelConfig(ADC1,channel,1,ADC_SampleTime_7Cycles5);
+	ADC_SoftwareStartConvCmd(ADC1,ENABLE);
+	while(!ADC_GetFlagStatus(ADC1,ADC_FLAG_EOC));
+	return ADC_GetConversionValue(ADC1);
 }
