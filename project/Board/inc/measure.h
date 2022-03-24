@@ -14,14 +14,14 @@ extern void testPWM_init(int period);
 #define LED_OFF (GPIO_ResetBits(GPIOC,GPIO_Pin_13))
 
 //键值获取
-#define KEY1 (~GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15))
-#define KEY2 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4))
-#define KEY3 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6))
-#define KEY4 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_8))
-#define KEY5 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3))
-#define KEY6 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5))
-#define KEY7 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_7))
-#define KEY8 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_9))
+#define SW1 (~GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15))
+#define SW2 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4))
+#define SW3 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6))
+#define SW4 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_8))
+#define SW5 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3))
+#define SW6 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5))
+#define SW7 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_7))
+#define SW8 (~GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_9))
 
 
 //光电传感器与输入通道转换
