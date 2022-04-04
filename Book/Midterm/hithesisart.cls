@@ -5,24 +5,24 @@
 %% The original source files were:
 %%
 %% hithesis.dtx  (with options: `artcls')
-%% 
+%%
 %% This is a generated file.
-%% 
+%%
 %% Copyright (C) 2017-2022 by Chu Yanshuo <yanshuoc@gmail.com>
-%% 
+%%
 %% This file may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3a
 %% of this license or (at your option) any later version.
 %% The latest version of this license is in:
-%% 
+%%
 %% http://www.latex-project.org/lppl.txt
-%% 
+%%
 %% and version 1.3a or later is part of all distributions of LaTeX
 %% version 2004/10/01 or later.
-%% 
+%%
 %% To produce the documentation run the original source files ending with `.dtx'
 %% through LaTeX.
-%% 
+%%
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesClass{hithesisart}
 [2021/05/06 3.0.15 Harbin Institute of Technology Thesis Template]
@@ -363,7 +363,7 @@
    {\equal{\hit@fontset}{siyuan}}%
    {\xiaosi[1]\vspace*{0.65em}}%
    {\xiaosi[1]\textcolor[rgb]{1,1,1}{\songti{\hit@hi}}}%
-   \vspace*{10mm}
+   \vspace*{20mm}
    \begin{center}
      \includegraphics[width=6.2cm]{hitlogo}
    \end{center}
@@ -379,7 +379,7 @@
        \hit@stage@doctype
      }
    \end{center}
-   \vspace{15mm}
+   \vspace{17mm}
    \parbox[t][6.5cm][t]{\textwidth}{
      \begin{center}
        \songti\xiaoer\textbf{\hit@cthesistitleprefix\hit@title@csep\hit@ctitlecover}
