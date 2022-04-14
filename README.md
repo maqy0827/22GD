@@ -4,7 +4,7 @@
 
 # 详细介绍
 
-如果你想看最详细的介绍，我推荐直接看[毕业设计论文](Book/Thesis/Thesis.pdf)
+如果你想看最详细的介绍，我推荐直接看[毕业设计论文](Book/Thesis/Thesis.word)
 
 ## 硬件与软件
 
@@ -14,8 +14,8 @@
 >
 > - 绘制电路板使用`Altium Designer 22`
 > - 程序设计使用`Keil_v5 (MDK536)`
-> - 毕业论文书写`Texlive2021`
-> - （文本编辑器宇宙最强 VScode）
+> - 毕业论文书写~~Texlive2021~~`Word`
+> - 推荐使用`VScode`阅读本项目
 
 > 硬件（实物
 >
@@ -33,7 +33,7 @@
 
 - `.vscode` VScode 配置文件
 - `Book` 中期报告与论文
-  - `Image` README 与论文中使用的图片
+  - `Image` README 与可能使用的图片
   - `Report` 中期报告
   - `Thesis` 毕业论文
 - `PCB` 电路板与原理图
