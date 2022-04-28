@@ -30,3 +30,15 @@ Repo
 #忽略CubeMX引脚分配用文件
 Project/Pin
 
+#Tex编译过程文件
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.thm
+*.toc
+
+#PDF暂不管理
+*.pdf
