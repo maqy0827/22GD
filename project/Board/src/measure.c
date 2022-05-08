@@ -1,9 +1,29 @@
 #include "measure.h"
 
+//转换模式
+void change_mode(uint8_t* mode)
+{
+	TIM_DeInit(TIM2);
+	if(*mode == 1)
+	{
+		TIM_EncoderInterfaceConfig(TIM2,TIM_EncoderMode_TI12,TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
+		*mode = 2;
+	}
+	else if(*mode == 2)
+	{
+		TIM_ETRClockMode2Config(TIM2,TIM_ExtTRGPSC_OFF,TIM_ExtTRGPolarity_NonInverted,0);
+		*mode = 1;
+	}
+	TIM_SetCounter(TIM2,0);
+	TIM_Cmd(TIM2, ENABLE);
+	return;
+}
+
 //测量初始化
 void measure_init(void)
 {
 	//初始化 PB3 - PB9 按键输入引脚，PC13 LED 引脚
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);
 
@@ -28,7 +48,7 @@ void measure_init(void)
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	//PA0
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;			//下拉输入
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;	//浮空输入
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
 
 	TIM_DeInit(TIM2);
@@ -41,8 +61,8 @@ void measure_init(void)
 	TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);
 
 	//选择正交解码/直接计数
-	TIM_EncoderInterfaceConfig(TIM2,TIM_EncoderMode_TI12,TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
 	//TIM_ETRClockMode2Config(TIM2,TIM_ExtTRGPSC_OFF,TIM_ExtTRGPolarity_NonInverted,0);
+	TIM_EncoderInterfaceConfig(TIM2,TIM_EncoderMode_TI12,TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
 
 	TIM_SetCounter(TIM2,0);
 	TIM_Cmd(TIM2, ENABLE);
@@ -52,7 +72,7 @@ void measure_init(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
 
-	GPIO_InitStructure.GPIO_Pin = 0x001E;					//PA2 - PA5
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4|GPIO_Pin_5;	//PA4 - PA5
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		//50MHz 输出速度
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;			//模拟输入
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
@@ -115,16 +135,25 @@ void testPWM_init(int period)
 	TIM_SetCompare2(TIM3,period/4*3);
 
 	TIM_Cmd(TIM3,ENABLE);
+	return;
 }
 
-uint16_t adc_get(uint8_t channel)
+uint16_t ADC_get(uint8_t channel,uint8_t time)
 {
-	if(channel - 2 > 3)
+	int ans = 0;
+
+	//设置采集通道和周期
+	ADC_RegularChannelConfig(ADC1,channel,1,ADC_SampleTime_71Cycles5);
+	uint8_t a = time;
+
+	//进行 time 次采集
+	while(a --)
 	{
-		return 0;
+		ADC_SoftwareStartConvCmd(ADC1,ENABLE);
+		while(!ADC_GetFlagStatus(ADC1,ADC_FLAG_EOC));
+		ans += (int)ADC_GetConversionValue(ADC1);
 	}
-	ADC_RegularChannelConfig(ADC1,channel,1,ADC_SampleTime_7Cycles5);
-	ADC_SoftwareStartConvCmd(ADC1,ENABLE);
-	while(!ADC_GetFlagStatus(ADC1,ADC_FLAG_EOC));
-	return ADC_GetConversionValue(ADC1);
+	ans /= time;
+	ans = (ans * 3300)>>12;
+	return ans;
 }

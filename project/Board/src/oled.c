@@ -195,31 +195,27 @@ void OLED_show8x16string(uint8_t x,uint8_t y,char* string)
 
 void OLED_show6x8number(uint8_t x,uint8_t y,int number)
 {
-	OLED_setpos(x,y);
 	if(!number)
 	{
+		OLED_show6x8char(x,y,' ');
 		OLED_show6x8char(x+6,y,'0');
+		OLED_show6x8char(x+12,y,' ');
 		return;
 	}
 	if(number<0)//显示负号并使数字变正
 	{
-		for(int a = 0;a<6;a++)
-		{
-			IIC_writedata(char6X8['-'-' '][a],OLED_DATA);
-		}
+		OLED_show6x8char(x,y,'-');
 		number = -number;
 	}
 	else
 	{
-		for(int a = 0;a<6;a++)//显示空白字符
-		{
-			IIC_writedata(char6X8[0][a],OLED_DATA);
-		}
+		OLED_show6x8char(x,y,' ');
 	}
 	//转换数字为字符串
 	char num[20];
 	num[19] = '\0';
-	int a = 18;
+	num[18] = ' ';
+	int a = 17;
 	while(1)
 	{
 		if(!number)//当数字为0时跳出
@@ -237,7 +233,9 @@ void OLED_show8x16number(uint8_t x,uint8_t y,int number)
 {
 	if(!number)
 	{
+		OLED_show8x16char(x,y,' ');
 		OLED_show8x16char(x+8,y,'0');
+		OLED_show8x16char(x+16,y,' ');
 		return;
 	}
 	if(number<0)//显示负号并使数字变正
@@ -264,6 +262,6 @@ void OLED_show8x16number(uint8_t x,uint8_t y,int number)
 		number /= 10;
 		a--;
 	}
-	OLED_show8x16string(x+6,y,num+a+1);
+	OLED_show8x16string(x+8,y,num+a+1);
 }
 

@@ -16,6 +16,7 @@ Project/MDK/DebugConfig
 Project/MDK/Listings
 Project/MDK/Objects
 Project/MDK/*.uvguix.*
+*scvd
 
 #忽略VScode部分
 *.log
