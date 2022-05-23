@@ -93,6 +93,30 @@ void measure_init(void)
 	ADC_StartCalibration(ADC1);				//校准
 	while(ADC_GetCalibrationStatus(ADC1));	//等待校准完成
 
+
+	//初始化串口1，不使用串口
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_GPIOA, ENABLE);
+
+	//初始化 PA9 PA10
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	USART_InitTypeDef USART_InitStructure;
+	USART_InitStructure.USART_BaudRate = 9600;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;	//数据长度 8 位
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;		//停止位1
+	USART_InitStructure.USART_Parity = USART_Parity_No;			//无校验位
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;//同时收发
+	USART_Init(USART1, &USART_InitStructure);
+	USART_Cmd(USART1, ENABLE);
+
 	return;
 }
 
@@ -135,6 +159,24 @@ void testPWM_init(int period)
 	TIM_SetCompare2(TIM3,period/4*3);
 
 	TIM_Cmd(TIM3,ENABLE);
+	return;
+}
+
+void USART1send(uint8_t ch)
+{
+	while (!(USART1->SR & USART_FLAG_TXE));
+	USART1->DR = (uint8_t)ch;
+	return;
+}
+
+void datstx(uint16_t ans)
+{
+	USART1send(0x03);
+	USART1send(0xfc);
+	USART1send(ans &0x00FF);
+	USART1send(ans >>8);
+	USART1send(0xfc);
+	USART1send(0x03);
 	return;
 }
 

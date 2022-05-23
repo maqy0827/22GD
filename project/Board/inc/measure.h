@@ -32,4 +32,7 @@ extern void testPWM_init(int period);
 //获取放大后的光电检测测量值，单位为毫伏
 extern uint16_t ADC_get(uint8_t channel,uint8_t time);
 
+//虚拟示波器发送数据
+extern void datstx(uint16_t ans);
+	
 #endif /* #ifndef __MEASURE_H__ */

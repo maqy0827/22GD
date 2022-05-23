@@ -9,13 +9,24 @@
 #include "oled.h"
 #include "delay.h"
 #include "measure.h"
+#include "stdio.h"
+
+//重定向 printf 函数
+int fputc(int ch, FILE *f)
+{
+	while (!(USART1->SR & USART_FLAG_TXE));
+	USART1->DR = (uint8_t)ch;
+	return ch;
+}
+
 
 //激光波长，单位0.1nm
-#define Laser_WaveLength 6328
+#define Laser_WaveLength (632/2)
 
 int main(void)
 {
 	uint8_t mode = 2;
+	int ans = 0,N = 0;
 	delay_init();	//初始化延时函数
 	OLED_init();	//初始化OLED
 	measure_init();//初始化测量所需
@@ -24,6 +35,7 @@ int main(void)
 	while(1)
 	{
 		OLED_clear();
+
 		//等待 SW1 被按下，开始
 		while(!SW1)
 		{
@@ -35,9 +47,9 @@ int main(void)
 		TIM_Cmd(TIM2,DISABLE);
 		TIM_SetCounter(TIM2,0);
 		OLED_clear();
+		OLED_show8x16string(0,0,"Sft:");
 		OLED_show8x16string(0,2,"Ctr:");
 		OLED_show8x16string(0,4,"L1O:");
-		OLED_show8x16string(0,6,"L2O:");
 		TIM_Cmd(TIM2,ENABLE);
 
 		//测量中显示
@@ -50,12 +62,26 @@ int main(void)
 				while(SW3);
 			}
 
-			//显示当前比特
-			OLED_show8x16number(0,0,mode);
-			OLED_show8x16number(32,2,TIM_GetCounter(TIM2));
+			//获取计数值并计算位移
+			N = (int16_t)TIM_GetCounter(TIM2);
+			if(mode == 1)
+			{
+				ans = N * Laser_WaveLength;
+			}
+			else if(mode == 2)
+			{
+				ans = N * (Laser_WaveLength/4);
+			}
+
+			//显示位移和调试信息
+			OLED_show8x16number(32,0,ans);
+			OLED_show8x16number(32,2,N);
 			OLED_show8x16number(32,4,ADC_get(LED1_OUT,20));
 			OLED_show8x16number(32,6,ADC_get(LED2_OUT,20));
+			OLED_show8x16number(0,6,mode);
 			delay_ms(20);
+			//printf("ans=%dnm\n",ans);
+			datstx(ans);
 		}
 		while(!SW4)
 		{
