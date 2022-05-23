@@ -4,7 +4,7 @@
 
 # 详细介绍
 
-如果你想看最详细的介绍，我推荐直接看[毕业设计论文](Book/Thesis/Thesis.word)
+如果你想看最详细的介绍，我推荐直接看[毕业设计论文](Book/Thesis/Thesis.pdf)
 
 ## 硬件与软件
 
@@ -39,7 +39,7 @@
   - `Open` 开题报告
   - `Thesis` 毕业论文
 - `PCB` 电路板与原理图
-  - `Libraries`原理图库和元件库
+  - `Libraries` 原理图库和元件库
   - `22GD` 毕设使用电路板
   - `Test1` 首次测试使用电路板
 - `Project` 单片机程序

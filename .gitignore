@@ -43,3 +43,11 @@ Project/Pin
 
 #PDF暂不管理
 *.pdf
+
+*.tmp
+
+#word临时文件
+~$*
+
+#matlab历史记录
+*.asv
