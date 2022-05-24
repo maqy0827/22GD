@@ -37,7 +37,7 @@
   - `Image` README 与实验记录图片/视频
   - `Midterm` 中期报告
   - `Open` 开题报告
-  - `Thesis` 毕业论文
+  - `Thesis` 毕业论文与数据处理
 - `PCB` 电路板与原理图
   - `Libraries` 原理图库和元件库
   - `22GD` 毕设使用电路板

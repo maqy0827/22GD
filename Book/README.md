@@ -19,10 +19,10 @@
 - `Thesis.docx` 毕业论文word版
 - `Thesis.vsdx` 论文中使用的框图
 - `Thesis.pptx` 结题答辩使用的ppt
-# 查看方式
-**老实点，用word**
-~~推荐使用`VScode`配合`LaTex Workshop`插件使用，配置完成后可以做到保存文件时自动编译。~~
 
+# 数据分析
+
+实验数据分析使用`MATLAB`软件，通过给压电陶瓷加已知电压产生待测位移，在[该网站](http://www.pantpiezo.com/product/3.html)可以找到压电陶瓷的参数 5um/150V，即 33 nm/V，由此可获得位移真值用于和实验结果对比。
 
 # 感谢
 
