@@ -51,3 +51,6 @@ Project/Pin
 
 #matlab历史记录
 *.asv
+
+#视频
+*.mp4
