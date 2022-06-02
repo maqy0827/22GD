@@ -23,6 +23,7 @@ y = lamuda/8*(0:1:12); %计算测量出的理论位移
 [y_fit,delta] = polyval(p1,x,S1);
 corrcoef([x11,x12,x21,x22,x31,x32],[y,y,y,y,y,y])%计算相关系数并输出
 
+set(gca, 'Fontname', 'Times newman', 'Fontsize', 16);
 % 画第1次测量曲线
 hold on;
 plot(x11,y,'o');

@@ -4,7 +4,7 @@ xlength = 10*pi;
 x = 0:0.01:xlength;
 
 y1 = (sin(x) + 1)/2;
-y2 = (sin(x - pi/4) + 1)/2;
+y2 = (sin(x + pi/4) + 1)/2;
 
 y3 = zeros(1,length(x));
 y4 = zeros(1,length(x));
