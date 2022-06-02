@@ -41,9 +41,6 @@ Project/Pin
 *.thm
 *.toc
 
-#PDF暂不管理
-*.pdf
-
 *.tmp
 
 #word临时文件
